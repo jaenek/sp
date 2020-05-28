@@ -3,7 +3,7 @@ int main(int argc, char **argv)
 	Data *data = calloc(1,sizeof(Data));
 	data->delim = ';';
 
-	// TODO: Add interact flag
+	// TODO(#1): Add interactive flag
 	size_t optind;
 	for ( optind = 1; optind < argc && argv[optind][0] == '-'; optind++) {
 		switch (argv[optind][1]) {
