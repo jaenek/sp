@@ -33,7 +33,7 @@ void plot(Data *data)
 			ymax = cur;
 	}
 
-	// TODO: Axis scale becomes infinity if min and max are equal
+	// TODO(#6): Axis scale becomes infinity if min and max are equal
 	float xs = SCREEN_WIDTH/fabs(xmin-xmax);
 	float ys = SCREEN_HEIGHT/fabs(ymin-ymax);
 
