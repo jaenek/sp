@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 
 void usage()
 {
-	// TODO: Write proper usage function
+	// TODO(#3): Write proper usage function
 	fprintf(stderr, "Usage: sp [-d] [file...]\n");
 }
 
