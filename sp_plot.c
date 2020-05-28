@@ -2,7 +2,7 @@ const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 480;
 
 // TODO(#2): Add plot margins
-// TODO: Add resizing
+// TODO(#4): Add resizing
 // TODO: Add labels
 void plot(Data *data)
 {
