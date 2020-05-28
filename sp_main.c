@@ -60,7 +60,7 @@ void readfromfile(Data *data, char *filename)
 
 void readdata(Data *data)
 {
-	// TODO: Add labels
+	// TODO(#5): Add labels
 	float x = 0.0f, y = 0.0f;
 	char fmt[6];
 	snprintf(fmt, 6, "%%f%c%%f", data->delim);
