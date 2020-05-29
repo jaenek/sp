@@ -7,6 +7,6 @@
 
 #include <SDL2/SDL.h>
 
-#include "sp_main.h"
+#include "sp_input.c"
 #include "sp_plot.c"
 #include "sp_main.c"
