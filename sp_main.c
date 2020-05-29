@@ -6,20 +6,25 @@ void usage()
 
 int main(int argc, char **argv)
 {
-	Data *data = calloc(1,sizeof(Data));
-	data->delim = ';';
+	Plotter *plotter = calloc(1,sizeof(Plotter));
+	plotter->interactive = true;
+	plotter->data = calloc(1,sizeof(Data));
+	plotter->data->delim = ';';
 
-	// TODO(#1): Add interactive flag
 	size_t optind;
 	for ( optind = 1; optind < argc && argv[optind][0] == '-'; optind++) {
 		switch (argv[optind][1]) {
 		case 'd': {
 			if (argc - optind > 1) {
-				data->delim = argv[++optind][0];
+				plotter->data->delim = argv[++optind][0];
 			} else {
 				usage();
 				exit(EXIT_FAILURE);
 			}
+			break;
+		}
+		case 'n': {
+			plotter->interactive = false;
 			break;
 		}
 		case '\0': break; // do not exit on - (stdin)
@@ -30,17 +35,17 @@ int main(int argc, char **argv)
 	}
 
 	if (argc > optind) {
-		readfromfile(data, argv[optind]);
+		readfromfile(plotter->data, argv[optind]);
 	} else {
-		data->input = stdin;
-		readdata(data);
+		plotter->data->input = stdin;
+		readdata(plotter->data);
 	}
 
-	for (size_t i  = 0; i < data->n; i++) {
-		printf("x: %f, y: %f\n", data->x[i], data->y[i]);
+	for (size_t i  = 0; i < plotter->data->n; i++) {
+		printf("x: %f, y: %f\n", plotter->data->x[i], plotter->data->y[i]);
 	}
 
-	plot(data);
+	plot(plotter);
 
 	exit(EXIT_SUCCESS);
 }

@@ -1,9 +1,14 @@
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 480;
 
+typedef struct Plotter {
+	bool interactive;
+	Data *data;
+} Plotter;
+
 // TODO(#2): Add plot margins
 // TODO(#4): Add resizing
-void plot(Data *data)
+void plot(Plotter *plotter)
 {
 	SDL_Window *window = NULL;
 	SDL_Renderer *renderer = NULL;
@@ -21,6 +26,8 @@ void plot(Data *data)
 
 	SDL_SetRenderDrawColor(renderer, 34, 34, 34, 255);
 	SDL_RenderClear(renderer);
+
+	Data *data = plotter->data;
 
 	float xmin = data->x[0], xmax = data->x[data->n-1];
 	float ymin = data->y[0], ymax = data->y[0];
@@ -50,13 +57,13 @@ void plot(Data *data)
 
 	SDL_RenderPresent(renderer);
 
-}
-
-/*	interact function
-	SDL_Event e;
-	while (SDL_PollEvent(&e) != 0) {
-		if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) {
-			break;
+	if (plotter->interactive) {
+		SDL_Event e;
+		while (SDL_WaitEvent(&e) != 0) {
+			if (e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE) {
+				break;
+			}
 		}
 	}
-*/
+}
+
