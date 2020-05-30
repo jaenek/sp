@@ -4,10 +4,12 @@ typedef struct Data {
 	size_t n;
 	float *x;
 	float *y;
+	float xmin;
+	float ymin;
 	float xscale;
 	float yscale;
-	float xmargin;
-	float ymargin;
+	int xmargin;
+	int ymargin;
 } Data;
 
 void readdata(Data *data)

@@ -27,6 +27,25 @@ int main(int argc, char **argv)
 			plotter->interactive = false;
 			break;
 		}
+		case 'm': {
+			if (argv[optind][2] == 'x') {
+				if (sscanf(argv[++optind], "%d", &plotter->data->xmargin) != 1) {
+					usage();
+					exit(EXIT_FAILURE);
+				}
+			} else if (argv[optind][2] == 'y') {
+				if (sscanf(argv[++optind], "%d", &plotter->data->ymargin) == 1) {
+					plotter->data->ymargin *= 2;
+				} else {
+					usage();
+					exit(EXIT_FAILURE);
+				}
+			} else {
+				usage();
+				exit(EXIT_FAILURE);
+			}
+			break;
+		}
 		case '\0': break; // do not exit on - (stdin)
 		default:
 			usage();
