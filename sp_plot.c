@@ -43,7 +43,6 @@ void render(SDL_Renderer *renderer, Data *data)
 	SDL_RenderPresent(renderer);
 }
 
-// TODO(#2): Add plot margins
 // TODO(#4): Add resizing
 void plot(Plotter *plotter)
 {
