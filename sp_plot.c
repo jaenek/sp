@@ -19,13 +19,18 @@ void prepare(Data *data)
 	}
 
 	data->xmin = xmin;
-	data->ymin = xmin;
+	data->ymin = ymin;
 
 	// TODO(#6): Axis scale becomes infinity if min and max are equal
 	data->xscale = (SCREEN_WIDTH-data->xmargin)/fabs(xmin-xmax);
 	data->yscale = (SCREEN_HEIGHT-data->ymargin)/fabs(ymin-ymax);
 
-	data->ymargin += fabs(ymin-ymax)*data->yscale;
+	if (isinf(data->yscale)) {
+		data->ymargin = SCREEN_HEIGHT;
+		data->yscale = 1;
+	}
+
+	data->ymargin /= 2;
 }
 
 
@@ -35,8 +40,8 @@ void render(SDL_Renderer *renderer, Data *data)
 	for (size_t i = 0; i < data->n - 1; i++){
 		int x1 = data->xscale*(data->x[i]-data->xmin)+data->xmargin;
 		int x2 = data->xscale*(data->x[i+1]-data->xmin)+data->xmargin;
-		int y1 = SCREEN_HEIGHT-data->yscale*(data->y[i]-data->ymin)-0.5f*data->ymargin;
-		int y2 = SCREEN_HEIGHT-data->yscale*(data->y[i+1]-data->ymin)-0.5f*data->ymargin;
+		int y1 = SCREEN_HEIGHT-data->yscale*(data->y[i]-data->ymin)-data->ymargin;
+		int y2 = SCREEN_HEIGHT-data->yscale*(data->y[i+1]-data->ymin)-data->ymargin;
 		SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
 	}
 
