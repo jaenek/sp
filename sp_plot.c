@@ -21,7 +21,6 @@ void prepare(Data *data)
 	data->xmin = xmin;
 	data->ymin = ymin;
 
-	// TODO(#6): Axis scale becomes infinity if min and max are equal
 	data->xscale = (SCREEN_WIDTH-data->xmargin)/fabs(xmin-xmax);
 	data->yscale = (SCREEN_HEIGHT-data->ymargin)/fabs(ymin-ymax);
 
