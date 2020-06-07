@@ -64,12 +64,17 @@ void plot(Plotter *plotter)
 		exit(EXIT_FAILURE);
 	}
 
+	FC_Font* font = FC_CreateFont();
+	FC_LoadFont(font, renderer, "font/FreeSans.ttf", 20, FC_MakeColor(0,0,0,255), TTF_STYLE_NORMAL);
+
 	SDL_SetRenderDrawColor(renderer, 34, 34, 34, 255);
 	SDL_RenderClear(renderer);
 
 	prepare(plotter->data);
 
+	FC_Draw(font, renderer, 0, 0, "TEST Data length: %d\n", plotter->data->n);
 	render(renderer, plotter->data);
+
 
 	if (plotter->interactive) {
 		SDL_Event e;
@@ -79,4 +84,6 @@ void plot(Plotter *plotter)
 			}
 		}
 	}
+
+	FC_FreeFont(font);
 }

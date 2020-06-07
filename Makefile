@@ -1,27 +1,31 @@
-# Single compilation unit makefile
-CC=cc
-SDLINC = `sdl2-config --cflags`
-SDLLIB = `sdl2-config --libs`
-INCS = -I. ${SDLINC}
-LIBS = -lm ${SDLLIB}
-CFLAGS = -std=c11 -ggdb -Wall ${INCS} ${LIBS}
+NAME = sp
+
+PKGS = sdl2 SDL2_ttf
+CFLAGS = -Wall -Wextra -pedantic -I. -std=c11 -ggdb
+LIBS = $(shell pkg-config --libs $(PKGS)) -lm
+
+OBJ = lib/SDL_FontCache.o src/${NAME}.o
 
 .PHONY: all options clean
 
-all: options clean sp
+all: clean options ${NAME}
 
 options:
-	@echo sp build options:
-	@echo "CC       = ${CC}"
-	@echo "CFLAGS   = ${CFLAGS}"
-	@echo "LDFLAGS  = ${LDFLAGS}"
+	@echo ${NAME} build options:
+	@echo "CC     = ${CC}"
+	@echo "CFLAGS = ${CFLAGS}"
+	@echo "LIBS   = ${LIBS}"
 
 clean:
 	@echo cleaning
-	@rm -f sp
+	@rm -vf ${NAME} src/${NAME}.o
 
-sp: ${OBJ}
-	${CC} -o $@ $@.c ${CFLAGS}
+${NAME}: ${OBJ}
+	${CC} ${CFLAGS} -o $@ $^ ${LIBS}
+
+src/%.o: src/%.c
+lib/%.o: lib/%.c
+	${CC} ${CFLAGS} -c -o $@ $< ${LIBS}
 
 .ONESHELL:
 emcc:

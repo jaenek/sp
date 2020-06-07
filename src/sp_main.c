@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 	plotter->data = calloc(1,sizeof(Data));
 	plotter->data->delim = ';';
 
-	size_t optind;
+	int optind;
 	for ( optind = 1; optind < argc && argv[optind][0] == '-'; optind++) {
 		switch (argv[optind][1]) {
 		case 'd': {
