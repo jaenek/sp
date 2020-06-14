@@ -2,6 +2,8 @@ typedef struct Data {
 	FILE *input;
 	char delim;
 	size_t n;
+	size_t visible;
+	size_t start;
 	float *x;
 	float *y;
 	float xmin;

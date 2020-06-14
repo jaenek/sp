@@ -46,6 +46,12 @@ int main(int argc, char **argv)
 			}
 			break;
 		}
+		case 'l': {
+			if (sscanf(argv[++optind], "%lu", &plotter->data->visible) != 1) {
+				usage();
+				exit(EXIT_FAILURE);
+			}
+		}
 		case '\0': break; // do not exit on - (stdin)
 		default:
 			usage();
