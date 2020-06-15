@@ -66,11 +66,13 @@ int main(int argc, char **argv)
 		readdata(plotter->data);
 	}
 
-	for (size_t i  = 0; i < plotter->data->n; i++) {
-		printf("x: %f, y: %f\n", plotter->data->x[i], plotter->data->y[i]);
-	}
-
 	plot(plotter);
 
+	free(plotter->data->x);
+	free(plotter->data->y);
+	free(plotter->data->xscaled);
+	free(plotter->data->yscaled);
+	free(plotter->data);
+	free(plotter);
 	exit(EXIT_SUCCESS);
 }
