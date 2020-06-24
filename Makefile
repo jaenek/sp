@@ -31,7 +31,7 @@ lib/%.o: lib/%.c
 EMCCFLAGS = -O3 -s WASM=1 -s MODULARIZE=1
 EMCCASYNC = -s ASYNCIFY=1 -s ASYNCIFY_WHITELIST='["plot", "SDL_WaitEvent", "SDL_WaitEventTimeout", "SDL_Delay", "SDL_RenderPresent", "SDL_UpdateWindowSurface", "Emscripten_UpdateWindowFramebuffer"]'
 EMCCLIBS = -s USE_SDL=2 -s USE_SDL_TTF=2
-EMCCDATA = --preload-file data --embed-file font/FreeSans.ttf
+EMCCDATA = --preload-file data --embed-file font/FreeMono.otf
 .ONESHELL:
 emcc:
 	@source ~/workspace/emsdk/emsdk_env.sh

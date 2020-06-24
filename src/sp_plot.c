@@ -3,7 +3,7 @@ typedef struct Plotter {
 	Data *data;
 } Plotter;
 
-void render(SDL_Renderer *renderer, Data *data)
+void drawplot(SDL_Renderer *renderer, Data *data)
 {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);
@@ -14,6 +14,14 @@ void render(SDL_Renderer *renderer, Data *data)
 				data->xscaled[i],   data->yscaled[i],
 				data->xscaled[i+1], data->yscaled[i+1]);
 	}
+}
+
+void drawcrosshair(SDL_Renderer *r, int x, int y) {
+	SDL_Rect rect = {x-2, y-2, 5, 5};
+	SDL_SetRenderDrawColor(r, 71, 147, 255, 255);
+	SDL_RenderFillRect(r, &rect);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, x, 0, x, SCREEN_HEIGHT);
 }
 
 // TODO(#4): Add resizing
@@ -35,47 +43,50 @@ void plot(Plotter *plotter)
 
 	FC_Font* font = FC_CreateFont();
 	FC_LoadFont(font, renderer,
-			"font/FreeSans.ttf",     20,
+			"font/FreeMono.otf",     20,
 			FC_MakeColor(0,0,0,255), TTF_STYLE_NORMAL);
 
 	prepare(plotter->data);
 
-	render(renderer, plotter->data);
-
-	SDL_RenderPresent(renderer);
+	drawplot(renderer, plotter->data);
 
 	if (plotter->interactive) {
 		bool running = true;
 		SDL_Event e;
-		while (SDL_WaitEvent(&e) != 0 && running) {
-			if (e.type == SDL_QUIT)
-				break;
-			else if (e.type != SDL_KEYDOWN && e.type != SDL_MOUSEBUTTONDOWN)
-				continue;
-
-			render(renderer, plotter->data);
-
-			switch (e.key.keysym.sym) {
-			case SDLK_ESCAPE:
-					running = false;
-					break;
-			default:
-					break;
-			}
+		while (running) {
+			SDL_RenderPresent(renderer);
 
 			int index = 0;
-			switch (e.button.button) {
-			case SDL_BUTTON_LEFT:
-					index = closest(plotter->data, e.button.x, e.button.y);
-					FC_Draw(font, renderer, 0, 0, "x: %f\ny: %f",
-							plotter->data->x[plotter->data->start+index],
-							plotter->data->y[plotter->data->start+index]);
-					break;
-			default:
-					break;
-			}
+			SDL_PollEvent(&e);
+			switch (e.type) {
+			case SDL_QUIT:
+				running = false;
+				break;
+			case SDL_KEYDOWN:
+				switch (e.key.keysym.sym) {
+				case SDLK_ESCAPE:
+						running = false;
+						break;
+				default:
+						break;
+				}
+				break;
+			case SDL_MOUSEMOTION:
+				drawplot(renderer, plotter->data);
 
-			SDL_RenderPresent(renderer);
+				index = closestx(plotter->data, e.motion.x);
+
+				drawcrosshair(renderer,
+						plotter->data->xscaled[plotter->data->start+index],
+						plotter->data->yscaled[plotter->data->start+index]);
+
+				FC_Draw(font, renderer, 0, 0, "x: %f\ny: %f",
+						plotter->data->x[plotter->data->start+index],
+						plotter->data->y[plotter->data->start+index]);
+				break;
+			default:
+				continue;
+			}
 		}
 	}
 

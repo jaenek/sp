@@ -76,11 +76,11 @@ void prepare(Data *data)
 	}
 }
 
-int closest(Data *data, int x, int y) {
+int closestx(Data *data, int x) {
 	int index = 0;
-	float minlen = (data->xscaled[0]-x)*(data->xscaled[0]-x)+(data->yscaled[0]-y)*(data->yscaled[0]-y);
+	float minlen = abs(data->xscaled[0]-x);
 	for (size_t i = 1; i < data->visible-1; i++) {
-		float len = (data->xscaled[i]-x)*(data->xscaled[i]-x)+(data->yscaled[i]-y)*(data->yscaled[i]-y);
+		float len = abs(data->xscaled[i]-x);
 		if (len < minlen) {
 			index = i;
 			minlen = len;
