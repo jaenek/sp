@@ -28,13 +28,12 @@ lib/%.o: lib/%.c
 	${CC} ${CFLAGS} -c -o $@ $< ${LIBS}
 
 
-EMCCFLAGS = -O3 -s WASM=1 -s MODULARIZE=1
-EMCCASYNC = -s ASYNCIFY=1 -s ASYNCIFY_WHITELIST='["plot", "SDL_WaitEvent", "SDL_WaitEventTimeout", "SDL_Delay", "SDL_RenderPresent", "SDL_UpdateWindowSurface", "Emscripten_UpdateWindowFramebuffer"]'
+EMCCFLAGS = -O3 -s WASM=1 -s MODULARIZE=1 -s ALLOW_MEMORY_GROWTH=1
 EMCCLIBS = -s USE_SDL=2 -s USE_SDL_TTF=2
-EMCCDATA = --preload-file data --embed-file font/FreeMono.otf
+EMCCDATA = --preload-file data --embed-file font
 .ONESHELL:
 emcc:
 	@source ~/workspace/emsdk/emsdk_env.sh
 	@emcc -c lib/SDL_FontCache.c ${EMCCFLAGS} ${EMCCLIBS}
-	@emcc src/sp.c SDL_FontCache.o ${EMCCFLAGS} ${EMCCLIBS} ${EMCCDATA} ${EMCCASYNC} -o wasm/sp.js
+	@emcc src/sp.c SDL_FontCache.o ${EMCCFLAGS} ${EMCCLIBS} ${EMCCDATA} -o wasm/sp.js
 	@rm SDL_FontCache.o
